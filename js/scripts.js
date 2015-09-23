@@ -88,21 +88,35 @@ $(document).ready(function() {
         $(".rollscore").text("You rolled a "+ roll + ".");
         $(".turnscore").text("Your score is " + newGame.currentPlayer.turnScore + ".");
         $(".whoseturn").text(newGame.currentPlayer.playerName + "'s turn.");
-        $(".player1score").text(newGame.player1.gameScore);
-        $(".player2score").text(newGame.player2.gameScore);
+        $(".player1gamescore").text("Total: " + newGame.player1.gameScore);
+        $(".player2gamescore").text("Total: " + newGame.player2.gameScore);
 
 
 
     });
 
       $("#hold").click(function() {
+
+        if(newGame.currentPlayer === newGame.player1){
+          $("#player1scores").prepend("<tr><td>" + newGame.player1.turnScore + "</td></tr>");
+        } else {
+          $("#player2scores").prepend("<tr><td>" + newGame.player2.turnScore + "</td></tr>");
+        }
+
         newGame.hold();
         $(".rollscore").text("");
         $(".turnscore").text("");
         $(".whoseturn").text(newGame.currentPlayer.playerName + "'s turn.");
-        $(".player1score").text(newGame.player1.gameScore);
-        $(".player2score").text(newGame.player2.gameScore);
+        $(".player1gamescore").text("Total: " + newGame.player1.gameScore);
+        $(".player2gamescore").text("Total: " + newGame.player2.gameScore);
         $(".gameover").text(newGame.gameStatus());
+
+
+        if((newGame.player1.gameScore >= 100) || (newGame.player2.gameScore >= 100)){
+          $("#hold").hide();
+          $("#roll").hide();
+          $("#new-game-display").show();
+        }
     });
 
   });

@@ -37,12 +37,15 @@
             <span class="whoseturn"></span>
 
             <h2>Roll or hold?</h2>
-            <span class="rollscore"></span>
-            <span class="turnscore"></span>
 
 
             <button class="btn btn-success" id="roll">Roll</button>
             <button class="btn btn-warning" id="hold">Hold</button>
+
+            <p>
+            <span class="rollscore"></span>
+            <span class="turnscore"></span>
+            </p>
 
             <span class="gameover"></span>
           </div>
@@ -51,19 +54,40 @@
 
     <div class="well container">
       <h2>Scores</h2>
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th><span class="player1name"></span></th>
-            <th><span class="player2name"></span></th>
-          </tr>
-        </thead>
-        <tbody id="scores">
-          <tr>
-            <td><span class="player1score"></span></td>
-            <td><span class="player2score"></span></td>
-        </tbody>
-      </table>
+
+      <div class="col-sm-6">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th><span class="player1name"></span></th>
+            </tr>
+          </thead>
+          <tbody id="player1scores">
+
+            <tr>
+              <td><b><span class="player1gamescore"></span></b></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col-sm-6">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th><span class="player2name"></span></th>
+            </tr>
+          </thead>
+          <tbody id="player2scores">
+
+            <tr>
+              <td><b><span class="player2gamescore"></span></b></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+
     </div>
   </body>
 </html>
