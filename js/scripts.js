@@ -4,21 +4,6 @@ function Player(name){
   this.gameScore = 0;
 }
 
-Game.prototype.rollDie = function() {
-  var roll = Math.floor(Math.random() * 6) + 1;
-  this.checkRoll(roll);
-  return roll;
-}
-
-Game.prototype.checkRoll = function(roll){
-  if(roll > 1){
-    this.currentPlayer.increaseTurnScore(roll);
-  } else {
-    this.currentPlayer.resetTurnScore();
-    this.nextTurn();
-  };
-}
-
 Player.prototype.resetTurnScore = function(){
   this.turnScore = 0;
 }
@@ -37,11 +22,42 @@ function Game(playerOneName, playerTwoName){
   this.currentPlayer = this.player1;
 }
 
+Game.prototype.rollDie = function() {
+  var roll = Math.floor(Math.random() * 6) + 1;
+  this.checkRoll(roll);
+  return roll;
+}
+
+Game.prototype.checkRoll = function(roll){
+  if(roll > 1){
+    this.currentPlayer.increaseTurnScore(roll);
+  } else {
+    this.currentPlayer.resetTurnScore();
+    this.nextTurn();
+  };
+}
+
+Game.prototype.hold = function(){
+  this.currentPlayer.increaseGameScore(this.currentPlayer.turnScore);
+  this.currentPlayer.resetTurnScore();
+  this.nextTurn();
+}
+
 Game.prototype.nextTurn = function(){
   if(this.currentPlayer === this.player1){
     this.currentPlayer = this.player2;
   } else {
     this.currentPlayer = this.player1;
+  }
+}
+
+Game.prototype.gameStatus = function(){
+  if(this.player1.gameScore >= 100) {
+    return "Game over, " + this.player1.playerName + " wins.";
+  }else if(this.player2.gameScore >= 100){
+    return "Game over, " + this.player2.playerName + " wins.";
+  }else{
+    return "";
   }
 }
 
@@ -60,16 +76,33 @@ $(document).ready(function() {
       var playerOneName = $("input#player1").val();
       var playerTwoName = $("input#player2").val();
       var newGame = new Game(playerOneName,playerTwoName);
-      var currentplayer = newGame.player1;
 
+      $("#new-game-display").hide();
+      $(".whoseturn").text(newGame.currentPlayer.playerName + "'s turn.'");
       $(".player1name").text(playerOneName);
       $(".player2name").text(playerTwoName);
 
 
       $("#roll").click(function() {
-        var rollValue = currentPlayer.rollDie();
+        var roll = newGame.rollDie();
+        $(".rollscore").text("You rolled a "+ roll + ".");
+        $(".turnscore").text("Your score is " + newGame.currentPlayer.turnScore + ".");
+        $(".whoseturn").text(newGame.currentPlayer.playerName + "'s turn.");
+        $(".player1score").text(newGame.player1.gameScore);
+        $(".player2score").text(newGame.player2.gameScore);
 
 
+
+    });
+
+      $("#hold").click(function() {
+        newGame.hold();
+        $(".rollscore").text("");
+        $(".turnscore").text("");
+        $(".whoseturn").text(newGame.currentPlayer.playerName + "'s turn.");
+        $(".player1score").text(newGame.player1.gameScore);
+        $(".player2score").text(newGame.player2.gameScore);
+        $(".gameover").text(newGame.gameStatus());
     });
 
   });

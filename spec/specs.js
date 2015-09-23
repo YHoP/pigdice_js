@@ -2,14 +2,14 @@
 
 describe('rollDie', function() {
   it("returns an integer", function() {
-    var testPlayer = new Player("Jake");
-    var testRoll = testPlayer.rollDie();
+    var testGame = new Game("Jake", "Blake");
+    var testRoll = testGame.rollDie();
     expect(isNaN(testRoll)).to.equal(false);
   });
 
   it("returns an integer between 1-6", function(){
-    var testPlayer = new Player("Jake");
-    var testRoll = testPlayer.rollDie();
+    var testGame = new Game("Jake", "Blake");
+    var testRoll = testGame.rollDie();
     expect(1 <= testRoll).to.be.true;
     expect(testRoll <= 6).to.be.true;
   });
@@ -17,22 +17,22 @@ describe('rollDie', function() {
 
 describe('checkRoll',function() {
   it("returns a zero in turn score when player rolls a 1", function() {
-    var testPlayer = new Player("Jake");
-    testPlayer.checkRoll(1);
-    expect(testPlayer.turnScore).to.equal(0);
+    var testGame = new Game("Jake", "Blake");
+    testGame.checkRoll(1);
+    expect(testGame.currentPlayer.turnScore).to.equal(0);
   });
 
   it("adds to turnscore if roll is above 1", function() {
-    var testPlayer = new Player("Jake");
-    testPlayer.checkRoll(5);
-    expect(testPlayer.turnScore).to.equal(5);
+    var testGame = new Game("Jake", "Blake");
+    testGame.checkRoll(5);
+    expect(testGame.currentPlayer.turnScore).to.equal(5);
   });
 
   it("adds to turnscore if roll is above 1", function() {
-    var testPlayer = new Player("Jake");
-    testPlayer.checkRoll(5);
-    testPlayer.checkRoll(1);
-    expect(testPlayer.turnScore).to.equal(0);
+    var testGame = new Game("Jake", "Blake");
+    testGame.checkRoll(5);
+    testGame.checkRoll(1);
+    expect(testGame.currentPlayer.turnScore).to.equal(0);
   });
 
 });

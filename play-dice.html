@@ -15,7 +15,7 @@
 
       <div class="well container">
 
-        <div class="col-sm-6">
+        <div class="col-sm-6" id="new-game-display">
 
           <h2>Enter player names:</h2>
           <form id="new-game">
@@ -34,16 +34,17 @@
 
         <div class="col-sm-6">
           <div id="show-contact">
-            <h2>Roll or hold?</h2>
-
-            <span class="turnscore"></span>
             <span class="whoseturn"></span>
+
+            <h2>Roll or hold?</h2>
+            <span class="rollscore"></span>
+            <span class="turnscore"></span>
 
 
             <button class="btn btn-success" id="roll">Roll</button>
             <button class="btn btn-warning" id="hold">Hold</button>
 
-
+            <span class="gameover"></span>
           </div>
         </div>
     </div>
@@ -58,7 +59,9 @@
           </tr>
         </thead>
         <tbody id="scores">
-
+          <tr>
+            <td><span class="player1score"></span></td>
+            <td><span class="player2score"></span></td>
         </tbody>
       </table>
     </div>
