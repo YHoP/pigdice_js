@@ -66,58 +66,83 @@ Game.prototype.gameStatus = function(){
 //to stop rolling to keep your score, adding it to the
 //overall game score.
 
+function clickRollFunction(newGame) {
+  var thisRoll = newGame.rollDie();
+  var name = newGame.currentPlayer.playerName;
+  console.log("current player: "+ name);
+  $(".rollscore").html(name + " rolled a "+ thisRoll + ". <br>");
+  $(".turnscore").text(name + " score is " + newGame.currentPlayer.turnScore + ".");
+  $(".whoseturn").text(name + "'s turn.");
+  $(".player1gamescore").text("Total: " + newGame.player1.gameScore);
+  $(".player2gamescore").text("Total: " + newGame.player2.gameScore);
+  console.log("player2 name: "+ newGame.player2.playerName)
+}
 
+function clickHoldFunction(newGame){
+  if(newGame.currentPlayer === newGame.player1){
+    $("#player1scores").prepend("<tr><td>" + newGame.player1.turnScore + "</td></tr>");
+  } else {
+    $("#player2scores").prepend("<tr><td>" + newGame.player2.turnScore + "</td></tr>");
+  }
+
+  newGame.hold();
+
+  $(".rollscore").text("");
+  $(".turnscore").text("");
+  $(".whoseturn").text(newGame.currentPlayer.playerName + "'s turn.");
+  $(".player1gamescore").text("Total: " + newGame.player1.gameScore);
+  $(".player2gamescore").text("Total: " + newGame.player2.gameScore);
+
+
+  if((newGame.player1.gameScore >= 100) || (newGame.player2.gameScore >= 100)){
+    $(".gameover").text(newGame.gameStatus());
+    $("#show-contact").hide();
+    // $("#hold").hide();
+    // $("#roll").hide();
+    $("#new-game-display").show();
+  }
+}
+
+
+function computerPlay(newGame) {
+    setTimeout(function () { clickRollFunction(newGame) }, 2000);
+    setTimeout(function () { clickRollFunction(newGame) }, 2000);
+
+    setTimeout(function () { clickHoldFunction(newGame) }, 1000);
+}
 
 $(document).ready(function() {
 
-
   $("form#new-game").submit(function(event) {
-      event.preventDefault();
-      var playerOneName = $("input#player1").val();
-      var playerTwoName = $("input#player2").val();
-      var newGame = new Game(playerOneName,playerTwoName);
+    event.preventDefault();
+    var playerOneName = $("input#player1").val();
+    var playerTwoName = $("input#player2").val();
+    if(playerTwoName === "") {
+      playerTwoName = "Computer";
+    }
+    var newGame = new Game(playerOneName,playerTwoName);
 
-      $("#new-game-display").hide();
-      $(".whoseturn").text(newGame.currentPlayer.playerName + "'s turn.'");
-      $(".player1name").text(playerOneName);
-      $(".player2name").text(playerTwoName);
-
-
-      $("#roll").click(function() {
-        var roll = newGame.rollDie();
-        $(".rollscore").text("You rolled a "+ roll + ".");
-        $(".turnscore").text("Your score is " + newGame.currentPlayer.turnScore + ".");
-        $(".whoseturn").text(newGame.currentPlayer.playerName + "'s turn.");
-        $(".player1gamescore").text("Total: " + newGame.player1.gameScore);
-        $(".player2gamescore").text("Total: " + newGame.player2.gameScore);
+    $("#new-game-display").hide();
+    $(".whoseturn").text(newGame.currentPlayer.playerName + "'s turn.");
+    $(".player1name").text(playerOneName);
+    $(".player2name").text(playerTwoName);
 
 
+    $("#roll").click(function() {
+      clickRollFunction(newGame);
 
+      if(newGame.currentPlayer.playerName === "Computer") {
+        computerPlay(newGame);
+      }
     });
 
-      $("#hold").click(function() {
-
-        if(newGame.currentPlayer === newGame.player1){
-          $("#player1scores").prepend("<tr><td>" + newGame.player1.turnScore + "</td></tr>");
-        } else {
-          $("#player2scores").prepend("<tr><td>" + newGame.player2.turnScore + "</td></tr>");
-        }
-
-        newGame.hold();
-        $(".rollscore").text("");
-        $(".turnscore").text("");
-        $(".whoseturn").text(newGame.currentPlayer.playerName + "'s turn.");
-        $(".player1gamescore").text("Total: " + newGame.player1.gameScore);
-        $(".player2gamescore").text("Total: " + newGame.player2.gameScore);
-        $(".gameover").text(newGame.gameStatus());
-
-
-        if((newGame.player1.gameScore >= 100) || (newGame.player2.gameScore >= 100)){
-          $("#hold").hide();
-          $("#roll").hide();
-          $("#new-game-display").show();
-        }
+    $("#hold").click(function() {
+      clickHoldFunction(newGame);
+      if(newGame.currentPlayer.playerName === "Computer") {
+        computerPlay(newGame);
+      }
     });
 
-  });
-});
+  }); // end of form submit
+
+}); // end of document.read
