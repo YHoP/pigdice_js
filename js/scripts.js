@@ -97,12 +97,9 @@ function clickHoldFunction(newGame){
   if((newGame.player1.gameScore >= 100) || (newGame.player2.gameScore >= 100)){
     $(".gameover").text(newGame.gameStatus());
     $("#show-contact").hide();
-    // $("#hold").hide();
-    // $("#roll").hide();
-    $("#new-game-display").show();
+    $("#nextRound").show();
   }
 }
-
 
 function computerPlay(newGame) {
     setTimeout(function () { clickRollFunction(newGame) }, 2000);
@@ -113,20 +110,27 @@ function computerPlay(newGame) {
 
 $(document).ready(function() {
 
+  var playerOneName;
+  var playerTwoName;
+  var newGame;
+  $("#nextRound").hide();
+  $("#new-game-display").show();
+
   $("form#new-game").submit(function(event) {
     event.preventDefault();
-    var playerOneName = $("input#player1").val();
-    var playerTwoName = $("input#player2").val();
+    playerOneName = $("input#player1").val();
+    playerTwoName = $("input#player2").val();
     if(playerTwoName === "") {
       playerTwoName = "Computer";
     }
-    var newGame = new Game(playerOneName,playerTwoName);
+    newGame = new Game(playerOneName,playerTwoName);
 
     $("#new-game-display").hide();
+    $("#show-contact").show();
     $(".whoseturn").text(newGame.currentPlayer.playerName + "'s turn.");
     $(".player1name").text(playerOneName);
     $(".player2name").text(playerTwoName);
-
+  }); // end of form submit
 
     $("#roll").click(function() {
       clickRollFunction(newGame);
@@ -139,10 +143,24 @@ $(document).ready(function() {
     $("#hold").click(function() {
       clickHoldFunction(newGame);
       if(newGame.currentPlayer.playerName === "Computer") {
-        computerPlay(newGame);
-      }
+        computerPlay(newGame);      }
     });
 
-  }); // end of form submit
+    $("#nextRound").click(function() {
+      playerOneName = "";
+      playerTwoName = "";
+      newGame = undefined;
+      $("#nextRound").hide();
+      $("#new-game-display").show();
+      $(".gameover").hide();
 
+      $("#player1scores").empty();
+      $("#player2scores").empty();
+      $(".rollscore").empty();
+      $(".turnscore").empty();
+      $(".whoseturn").empty();
+      $(".player1gamescore").empty();
+      $(".player2gamescore").empty();
+
+    });
 }); // end of document.read
